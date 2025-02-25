@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 
 public class Flatten_1208 {
     public static void main(String[] args) throws Exception {
-        System.setIn(Solution1208.class.getResourceAsStream("input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int T = 10;
 
