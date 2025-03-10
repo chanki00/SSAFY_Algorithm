@@ -84,8 +84,8 @@ public class Baaaaaaaaaduk2_Easy_16988 {
 			++count;
 			
 			for (int d=0; d<4; ++d) {
-				int nextR = r + dr[d];
-				int nextC = c + dc[d];
+				int nextR = curr.r + dr[d];
+				int nextC = curr.c + dc[d];
 				
 				if (isValid(nextR, nextC) && !visited[nextR][nextC]) {
 					if (map[nextR][nextC] == 0) {
