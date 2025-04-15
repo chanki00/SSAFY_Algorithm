@@ -27,6 +27,7 @@ public class 점심식사시간_2383 {
     static int[][] map;
     static List<Point> persons;
     static List<Point> stairs;
+    static int min;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -36,6 +37,8 @@ public class 점심식사시간_2383 {
 
             persons = new ArrayList<>();
             stairs = new ArrayList<>();
+
+            min = Integer.MAX_VALUE;
 
             map = new int[N][N];
             for (int i=0; i<N; ++i) {
@@ -52,6 +55,10 @@ public class 점심식사시간_2383 {
             }
 
             recursive(new ArrayList<>(), new ArrayList<>(), 0);
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("#").append(t).append(" ").append(min);
+            System.out.println(sb);
         }
     }
 
@@ -59,6 +66,7 @@ public class 점심식사시간_2383 {
     public static void recursive(List<Point> list1, List<Point> list2, int idx) {
         if (idx == persons.size()) {
             // 시간 체크
+            chk(list1, list2);
             return;
         }
 
@@ -70,16 +78,43 @@ public class 점심식사시간_2383 {
     }
 
     public static void chk(List<Point> list1, List<Point> list2) {
-        list1.sort((o1, o2) -> Integer.compare(getDistance(stairs.get(0), o1), getDistance(stairs.get(0), o2)));
-        list1.sort((o1, o2) -> Integer.compare(getDistance(stairs.get(1), o1), getDistance(stairs.get(1), o2)));
+        int time1 = play(list1, stairs.get(0));
+        int time2 = play(list2, stairs.get(1));
 
-        int time1 = 0;
-        int cnt1 = 0;
-        for (int i=0; i<list1.size(); ++i) {
+        min = Math.min(min, Math.max(time1, time2));
+    }
 
+    public static int play(List<Point> people, Point stair) {
+        List<Integer> dist = new ArrayList<>();
+        for (Point p : people) {
+            dist.add(getDistance(stair, p));
         }
 
+        dist.sort((o1, o2) -> Integer.compare(o1, o2));
+
+        List<Integer> useStair = new ArrayList<>();
+        int time = 0;
+        int idx = 0;
+
+        while (idx < dist.size() || !useStair.isEmpty()) {
+            ++time;
+            for (int i = 0; i < useStair.size(); ) {
+                if (useStair.get(i) == time) {
+                    useStair.remove(i);
+                } else {
+                    i++;
+                }
+            }
+
+            while (idx < dist.size() && dist.get(idx) + 1 <= time && useStair.size() < 3) {
+                useStair.add(time + map[stair.r][stair.c]);
+                idx++;
+            }
+        }
+
+        return time;
     }
+
 
     public static int getDistance(Point stair, Point person) {
         return Math.abs(stair.r - person.r) + Math.abs(stair.c - person.c);

@@ -66,7 +66,9 @@ public class 줄기세포배양_5653 {
 					int life = Integer.parseInt(st.nextToken());
 					if (life != 0) {
 						map[K + i][K + j] = new Cell(K + i, K + j, life);
+//						System.out.println((K+i) + " , " + (K+j));
 						before.offer(map[K + i][K + j]);
+						map[K+i][K+j].isNew = false;
 					}
 				}
 			}
@@ -128,10 +130,11 @@ public class 줄기세포배양_5653 {
 
 				for (Cell c : list) {
 					c.isNew = false;
+//					System.out.println(c.r + ", " + c.c);
 					before.offer(c);
 				}
 
-//				System.out.println("후");
+//				System.out.println((k+1) + " 후");
 //				System.out.println("비활성: " + before.size());
 //				System.out.println("활성: " + cellQ.size());
 //				System.out.println("죽음: " + after.size());
